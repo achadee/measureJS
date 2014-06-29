@@ -3,6 +3,8 @@ var ENV = 'testing';
 
 function Measurement(params) {
 
+
+
 }
 
 Measurement.prototype.format = function (style) {
@@ -21,12 +23,30 @@ Measurement.prototype.config = function (tree) {
 };
 
 Measurement.prototype.to = function(newUnit){
+	var applied = false;
+	var val = this.value;
+	var divisor = this.state;
+	var current = this.current;
+
 	this.conversions.forEach(function(unit){
 		/* handle all types to convert */
-		if(newUnit === unit.unit || newUnit === unit.name || newUnit === unit.plural){
-
+		if(newUnit == unit.unit || newUnit == unit.name || newUnit == unit.plural){
+			val = (val / divisor) * unit.multiplier;
+			applied = unit;
 		}
 	});
+	if(applied){
+		/* stores the state fo the transition */
+		this.current = applied;
+		this.state = applied.multiplier;
+		this.value = val;
+	}
+	else{
+		/* if trying to convert to the same type just return measurement */
+		if(unit === current){return this;}
+		_err('input error', 'cannot find values to convert to', newUnit);
+	}
+	return this;
 };
 
 function parse_params(params){
@@ -38,8 +58,9 @@ function parse_params(params){
 			_err('parsing error', 'unable to parse values given', params);
 		}
 		else{
-			instance.value = value[0];
+			instance.value = Number(value[0]);
 			instance.unit = unit[0];
+			instance.state = 1;
 		}
 	}
 	else{
@@ -51,7 +72,23 @@ function parse_params(params){
 
 
 module.exports = function (params) {
-  return parse_params(params);
+	var current_template = {
+		value: 0,
+		conversions : [{
+			unit: 'g',
+			multiplier: 0.001,
+			name: 'gram',
+			plural: 'grams'
+		}],
+		state: 1,
+		current: {
+			unit: 'g',
+			multiplier: 0.001,
+			name: 'gram',
+			plural: 'grams'
+		}
+	};
+	return parse_params(params);
 };
 
 function _err(errTyp, err, value){

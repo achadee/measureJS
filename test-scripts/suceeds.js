@@ -26,3 +26,5 @@ weight.config([
 		plural: 'pounds'
 	}
 	]);
+
+console.log(weight.to('pounds').to('tons').to('pounds').to('pounds').to('grams').value);
