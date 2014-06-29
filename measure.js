@@ -18,32 +18,30 @@ Measurement.prototype.config = function (tree) {
 			_err('config error', 'multiplier cannot equal 0', JSON.stringify(leaf));
 		}
 	});
-	this.conversions = tree;
+	this.conversions = this.conversions.concat(tree);
 	return this;
 };
 
 Measurement.prototype.to = function(newUnit){
 	var applied = false;
 	var val = this.value;
-	var divisor = this.state;
 	var current = this.current;
 
 	this.conversions.forEach(function(unit){
 		/* handle all types to convert */
 		if(newUnit == unit.unit || newUnit == unit.name || newUnit == unit.plural){
-			val = (val / divisor) * unit.multiplier;
+			val = (val / current.multiplier) * unit.multiplier;
 			applied = unit;
 		}
 	});
 	if(applied){
 		/* stores the state fo the transition */
 		this.current = applied;
-		this.state = applied.multiplier;
 		this.value = val;
 	}
 	else{
 		/* if trying to convert to the same type just return measurement */
-		if(unit === current){return this;}
+		if(newUnit === current){return this;}
 		_err('input error', 'cannot find values to convert to', newUnit);
 	}
 	return this;
@@ -51,6 +49,8 @@ Measurement.prototype.to = function(newUnit){
 
 function parse_params(params){
 	var instance = new Measurement();
+	instance.current = {};
+	instance.conversions = [];
 	if(params){
 		var value = params.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/);
 		var unit = params.match(/[a-z]+[^0-9]/);
@@ -59,8 +59,16 @@ function parse_params(params){
 		}
 		else{
 			instance.value = Number(value[0]);
-			instance.unit = unit[0];
+
+			instance.current.unit = unit[0];
+			instance.current.multiplier = 1;
+
 			instance.state = 1;
+
+			/* if it doesn't exist in conversions add it to the list */
+			if(!contains(instance)){
+				instance.conversions = instance.conversions.concat([instance.current]);
+			}
 		}
 	}
 	else{
@@ -69,6 +77,13 @@ function parse_params(params){
 	return instance;
 }
 
+
+function contains(unit){
+	var cur = unit.current;
+	return unit.conversions.forEach(function(c){
+		if(c === cur){return true;}
+	});
+}
 
 
 module.exports = function (params) {
@@ -93,12 +108,6 @@ module.exports = function (params) {
 
 function _err(errTyp, err, value){
 	console.log(errTyp.toUpperCase() + ": " + err + ' ' +  '\'' + value + '\'');
-}
-
-function console_debug(param){
-	if(ENV === 'testing'){
-		console.log('[TEST] ' + param);
-	}
 }
 
 return exports;

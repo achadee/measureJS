@@ -27,4 +27,4 @@ weight.config([
 	}
 	]);
 
-console.log(weight.to('pounds').to('tons').to('pounds').to('pounds').to('grams').value);
+console.log(weight.to('pounds').to('kg').value);
