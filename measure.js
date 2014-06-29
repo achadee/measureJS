@@ -11,13 +11,23 @@ Measurement.prototype.format = function (style) {
 };
 
 Measurement.prototype.config = function (tree) {
-   this.conversions = tree;
-   return this;
+	tree.forEach(function(leaf){
+		if(leaf.multiplier === 0){
+			_err('config error', 'multiplier cannot equal 0', JSON.stringify(leaf));
+		}
+	});
+	this.conversions = tree;
+	return this;
 };
 
 Measurement.prototype.to = function(newUnit){
-	
-}
+	this.conversions.forEach(function(unit){
+		/* handle all types to convert */
+		if(newUnit === unit.unit || newUnit === unit.name || newUnit === unit.plural){
+
+		}
+	});
+};
 
 function parse_params(params){
 	var instance = new Measurement();
