@@ -112,6 +112,12 @@ Measurement.prototype.times = function(measurement){
 	else{
 		to_multiply = parse_params(measurement);
 	}
+	if(matching_list(to_multiply, this.current) || matching_list(this.current, to_multiply)){
+		console.log('same');
+	}
+	else{
+		console.log('different');
+	}
 };
 
 function parse_params(params){
@@ -121,10 +127,14 @@ function parse_params(params){
 	if(params){
 		var value = params.match(/[-+]?([0-9]*\.[0-9]+|[0-9]+)/);
 		var unit = params.match(/[a-z]+[^0-9]/);
-		if(!value || !unit){
+		if(!unit){
 			_err('parsing error', 'unable to parse values given', params);
 		}
 		else{
+			if(!value){
+				/* defualts to 1 if no value is provided */
+				value = 1;
+			}
 			instance.value = Number(value[0]);
 
 			instance.current.unit = unit[0];

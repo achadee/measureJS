@@ -25,4 +25,4 @@ weight.config([
 	}
 	]);
 
-console.log(weight.to('pounds').to('kg').to('grams').add('5kg').sub('9kg'));
+console.log(weight.times('kg'));

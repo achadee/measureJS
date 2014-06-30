@@ -76,9 +76,7 @@ var volume = distance.times(distance).times('3m'); // --> returns m^3 unit type;
 combining these two allow us to perform more actions on more complex unit types
 
 ```erLang
-
-area.by(speed) // -> returns m^3/s
-
+area.by(speed) // -> returns m^2/s
 ```
 
 you can now couple this with the `to` method to perform some interesting conversions
