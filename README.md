@@ -59,8 +59,23 @@ weight.add('5p').add('5 kilograms').add('3g').sub('6kg').to('tons');
 - Multiplying units uses the `times` method
 - Dividing units uses the `by` method
 
+Multiplication and division operators are different in the sense that if the unit type is different between them they can act differently.
+
+for example
+
 ```erLang
-TODO
+var distance = measure('5m');
+
+var speed = distance.by('s');  // --> returns a m/s unit type
+var speed = distance.by(time); // --> returns a m/s unit type
+```
+
+you can now couple this with the `to` method to perform some interesting conversions
+
+```erLang
+speed.to('km/hr');
+speed.to('km/day');
+speed.to('years/km'); // --> measure js will notice a flip in units and handle an inversion
 ```
 
 ### Customising your own units
