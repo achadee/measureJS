@@ -17,7 +17,7 @@ weight.config(path/to/measurement/weights.json);
 ```
 ## Examples
 
-# Converting units
+### Converting units
 
 Converting units to other types uses the `to` method
 
@@ -34,7 +34,7 @@ weight.to('p');
 weight.to('pounds').to('kg').to('tons').to('grams').......
 ```
 
-# Adding units
+### Adding units
 
 Adding units uses the `add` method, you can add any typ as long as it has a common bas type
 
