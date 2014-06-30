@@ -43,7 +43,7 @@ you can add/subtract any type as long as it has a common base type
 
 ```erLang
 weight = measure('5kg');
-weight.add('5p').add('5 kilograms').sub(3g).sub('6kg');
+weight.add('5p').add('5 kilograms').sub('3g').sub('6kg');
 
 weight.add(5); //--> adds 5 of the current type, in this case 'kg'
 ```
@@ -59,7 +59,7 @@ weight.add('5p').add('5 kilograms').add('3g').sub('6kg').to('tons');
 - Multiplying units uses the `times` method
 - Dividing units uses the `by` method
 
-Multiplication and division operators are different in the sense that if the unit type is different between them they can act differently.
+Multiplication and division operators are different in the sense that if the unit type is different between them they can produce a new unit type.
 
 for example
 
@@ -67,7 +67,18 @@ for example
 var distance = measure('5m');
 
 var speed = distance.by('s');  // --> returns a m/s unit type
-var speed = distance.by(time); // --> returns a m/s unit type
+var speed = distance.by(time); // --> returns a m/s unit type 
+
+var area = distance.times(distance); // --> returns m^2 unit type
+var volume = distance.times(distance).times('3m'); // --> returns m^3 unit type;
+```
+
+combining these two allow us to perform more actions on more complex unit types
+
+```erLang
+
+area.by(speed) // -> returns m^3/s
+
 ```
 
 you can now couple this with the `to` method to perform some interesting conversions
