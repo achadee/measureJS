@@ -34,19 +34,33 @@ weight.to('p');
 weight.to('pounds').to('kg').to('tons').to('grams').......
 ```
 
-### Addition (operator)
+### Addition/Subtraction (value operator)
 
-Adding units uses the `add` method, you can add any typ as long as it has a common bas type
+- Adding units uses the `add` method
+- Subtracting units uses the `sub` method
+
+you can add/subtract any type as long as it has a common base type
 
 ```erLang
 weight = measure('5kg');
-weight.add('5p').add('5 kilograms').add(3g).add('6kg');
+weight.add('5p').add('5 kilograms').sub(3g).sub('6kg');
+
+weight.add(5); //--> adds 5 of the current type, in this case 'kg'
 ```
 
 returns a measurement object that takes the initial condition as the type. The above example will return a value in kg since `weight = measure('5kg')` is initialised to 'kg'. If you require the unit to be converted after the addtion just chain it like so
 
 ```erLang
-weight.add('5p').add('5 kilograms').add(3g).add('6kg').to('tons');
+weight.add('5p').add('5 kilograms').add(3g).sub('6kg').to('tons');
+```
+
+### Multiplication/Division (unit operator)
+
+- Multiplying units uses the `times` method
+- Dividing units uses the `by` method
+
+```erLang
+TODO
 ```
 
 ### Customising your own units
@@ -62,7 +76,7 @@ For an example we are going to create the `time` unit. note: the time unit has a
 ```erLang
 {
   [
-  {
+	{
 		unit: 's',
 		multiplier: 1,
 		name: 'second',
@@ -87,6 +101,7 @@ For an example we are going to create the `time` unit. note: the time unit has a
 		plural: 'milliseconds'
 	},
 	]
+}
 
 ```
 
