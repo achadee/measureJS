@@ -30,15 +30,22 @@ var weight = measure('4kg');
 weight.to('pounds');
 weight.to('p');
 
-// --> you can also chain convertions
-weight.to('pounds').to('kg').to('tons'); //.....
+// --> you can also chain convertions, but you shouldn't need too
+weight.to('pounds').to('kg').to('tons').to('grams').......
 ```
 
-## Versioning
+# Adding units
 
-This project will adhere to the principles of
-[semantic versioning](http://semver.org) once a first public API is declared.
+Adding units uses the `add` method, you can add any typ as long as it has a common bas type
 
-## Roadmap
+```erLang
+weight = measure('5kg');
+weight.add('5p').add('5 kilograms').add(3g).add('6kg');
+```
 
-See the `TODO.md` file for upcoming plans/changes.
+returns a measurement object that takes the initial condition as the type. The above example will return a value in kg since `weight = measure('5kg')` is initialised to 'kg'. If you require the unit to be converted after the addtion just chain it like so
+
+```erLang
+weight.add('5p').add('5 kilograms').add(3g).add('6kg').to('tons');
+```
+
