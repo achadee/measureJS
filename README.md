@@ -34,7 +34,7 @@ weight.to('p');
 weight.to('pounds').to('kg').to('tons').to('grams').......
 ```
 
-### Adding units
+### Addition (operator)
 
 Adding units uses the `add` method, you can add any typ as long as it has a common bas type
 
@@ -48,4 +48,52 @@ returns a measurement object that takes the initial condition as the type. The a
 ```erLang
 weight.add('5p').add('5 kilograms').add(3g).add('6kg').to('tons');
 ```
+
+### Customising your own units
+
+Some systems may rely on custom units to intergrate seamlessly. To do this you need to provide a configuration JSON file/object
+
+For an example we are going to create the `time` unit. note: the time unit has already been provided so it does not need to be implemented. 
+
+1. Create a configuration file
+2. Associate it with the unit you want to manipulate
+
+#### Example configuration file (time)
+```erLang
+{
+  [
+  {
+		unit: 's',
+		multiplier: 1,
+		name: 'second',
+		plural: 'seconds'
+	},
+	{
+		unit: 'min',
+		multiplier: 0.0166666666, // 1/60 
+		name: 'minute',
+		plural: 'minutes'
+	},
+	{
+		unit: 'hr',
+		multiplier: 0.000277777777, // (1/60)/60
+		name: 'hour',
+		plural: 'hours'
+	},
+	{
+		unit: 'ms',
+		multiplier: 100
+		name: 'millisecond',
+		plural: 'milliseconds'
+	},
+	]
+
+```
+
+now you are ready to use the `time.json` you just created!
+
+```erLang
+var time = measure('5s').config('path\to\time.json');
+```
+
 
