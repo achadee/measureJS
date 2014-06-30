@@ -51,7 +51,7 @@ weight.add(5); //--> adds 5 of the current type, in this case 'kg'
 returns a measurement object that takes the initial condition as the type. The above example will return a value in kg since `weight = measure('5kg')` is initialised to 'kg'. If you require the unit to be converted after the addtion just chain it like so
 
 ```erLang
-weight.add('5p').add('5 kilograms').add(3g).sub('6kg').to('tons');
+weight.add('5p').add('5 kilograms').add('3g').sub('6kg').to('tons');
 ```
 
 ### Multiplication/Division (unit operator)

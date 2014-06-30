@@ -81,6 +81,21 @@ Measurement.prototype.add = function(measurement){
 	return this;
 };
 
+Measurement.prototype.sub = function(measurement){
+	var to_add = parse_params(measurement);
+	var index = find_conversion(this, to_add.current.unit);
+	console.log('index is: ', index);
+	if(index != -1){
+		//console.log(this.conversions[index]);
+		this.value = ((this.value / this.current.multiplier) - ((to_add.value) / this.conversions[index].multiplier)) * this.current.multiplier;
+
+	}
+	else{
+		_err('input error', 'The unit you are trying to add does not exsit in the conversion list', to_add.current.unit);
+	}
+	return this;
+};
+
 function parse_params(params){
 	var instance = new Measurement();
 	instance.current = {};
