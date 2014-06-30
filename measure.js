@@ -29,7 +29,7 @@ Measurement.prototype.to = function(newUnit){
 
 	this.conversions.forEach(function(unit){
 		/* handle all types to convert */
-		if(newUnit == unit.unit || newUnit == unit.name || newUnit == unit.plural){
+		if(matching_list(newUnit, unit)){
 			val = (val / current.multiplier) * unit.multiplier;
 			applied = unit;
 		}
@@ -40,9 +40,43 @@ Measurement.prototype.to = function(newUnit){
 		this.value = val;
 	}
 	else{
+		console.log(this);
 		/* if trying to convert to the same type just return measurement */
 		if(newUnit === current){return this;}
-		_err('input error', 'cannot find values to convert to', newUnit);
+		_err('input error', 'The unit you are trying to convert does not exsit in the conversion list', newUnit);
+	}
+	return this;
+};
+
+function find_conversion(measurement, toLook){
+	var index = -1;
+	measurement.conversions.forEach(function(unit, i){
+
+		if(matching_list(toLook, unit)){
+			index = i;
+		}
+	});
+	return index;
+}
+
+function matching_list(newUnit, unit){
+	if (newUnit == unit.unit || newUnit == unit.name || newUnit == unit.plural){
+		return true;
+	}
+	return false;
+}
+
+Measurement.prototype.add = function(measurement){
+	var to_add = parse_params(measurement);
+	var index = find_conversion(this, to_add.current.unit);
+	console.log('index is: ', index);
+	if(index != -1){
+		//console.log(this.conversions[index]);
+		this.value = ((this.value / this.current.multiplier) + ((to_add.value) / this.conversions[index].multiplier)) * this.current.multiplier;
+
+	}
+	else{
+		_err('input error', 'The unit you are trying to add does not exsit in the conversion list', to_add.current.unit);
 	}
 	return this;
 };
@@ -67,6 +101,7 @@ function parse_params(params){
 
 			/* if it doesn't exist in conversions add it to the list */
 			if(!contains(instance)){
+				//_err('conflicting types warning', 'measure js is about to add this type to the conversions list', params);
 				instance.conversions = instance.conversions.concat([instance.current]);
 			}
 		}

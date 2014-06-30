@@ -3,19 +3,17 @@ var measure = require('../measure.js');
 /* parsing tests */
 var weight;
 weight = measure('4kg'); //valid
-weight = measure('-1kg'); //valid
-weight = measure('4.6kg'); //valid
 
 weight.config([
 	{
 		unit: 'g',
-		multiplier: 0.001,
+		multiplier: 1000,
 		name: 'gram',
 		plural: 'grams'
 	},
 	{
 		unit: 'T',
-		multiplier: 1000,
+		multiplier: 0.001,
 		name: 'ton',
 		plural: 'tons'
 	},
@@ -27,4 +25,4 @@ weight.config([
 	}
 	]);
 
-console.log(weight.to('pounds').to('kg').value);
+console.log(weight.to('pounds').to('kg').to('grams').add('5kg'));
