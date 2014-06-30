@@ -67,6 +67,10 @@ function matching_list(newUnit, unit){
 }
 
 Measurement.prototype.add = function(measurement){
+	if (typeof(measurement) === 'number'){
+		this.value += measurement;
+		return this;
+	}
 	var to_add = parse_params(measurement);
 	var index = find_conversion(this, to_add.current.unit);
 	console.log('index is: ', index);
@@ -82,6 +86,10 @@ Measurement.prototype.add = function(measurement){
 };
 
 Measurement.prototype.sub = function(measurement){
+	if (typeof(measurement) === 'number'){
+		this.value -= measurement;
+		return this;
+	}
 	var to_add = parse_params(measurement);
 	var index = find_conversion(this, to_add.current.unit);
 	console.log('index is: ', index);
@@ -94,6 +102,16 @@ Measurement.prototype.sub = function(measurement){
 		_err('input error', 'The unit you are trying to add does not exsit in the conversion list', to_add.current.unit);
 	}
 	return this;
+};
+
+Measurement.prototype.times = function(measurement){
+	var to_multiply;
+	if(measurement.value){
+		to_multiply = measurement;
+	}
+	else{
+		to_multiply = parse_params(measurement);
+	}
 };
 
 function parse_params(params){
